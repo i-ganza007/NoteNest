@@ -1,0 +1,24 @@
+Requirements for this site and instructions 
+Installations
+1. Node.js : running JS outside the browser
+2. Nuxt JS : npx nuxi@latest or nuxi@version init project-name
+
+Steps 🅰️
+a. Create pages directory at the root of the app , for different pages and then their titles will be the route names (register.vue will be /register etc)
+b. To render the routes on the page , use <NuxtPage/> component into the app vue and all the routes will be rendered automatically , just set up dummy to see if they work 
+c. Setup Tailwind css or whatever you like
+d. One of the perks of nuxt is when you have a components folder and you want to use the components in pages , you don't have to import it as normally in vue .
+ Just use the file name normally
+
+Setting up mysql and prisma (mamp and prisma) : Prisma is a traditional ORM that prevents from writing raw SQL and using Relational DB 
+MAMP : Is a database window that helps to connect and control databases to mostly MySQL and this handles well with Prisma 
+Basically : like a database local liveserver before deploying it 
+
+Make sure mamp is setup with the ports properly and is running before setting up tableplus and then connecting to prisma 
+
+When writing event listeners , use modifiers like .prevent to stop default behaviours like refreshing etc
+
+In vue , v-bind is for one-way binding for data like from parent to child in props & v-model is like two-way binding , to reflect data when user types something
+
+To write the backend code routes , create an api(name it api) folder in the server folder and create files that control the backend routes
+Again the files , are in charge of the route names
