@@ -1,17 +1,29 @@
+// server/api/user.post.js
+import { PrismaClient } from '@prisma/client'
+import bcrypt from 'bcryptjs'
+
+const prisma = new PrismaClient()
+
 export default defineEventHandler(async (event) => {
     try {
         const body = await readBody(event)
-        console.log('Received data on server:', body)
+        console.log('Received body:', body)
 
+        const salt = await bcrypt.genSalt(10)
+        
+        const passwordHash = await bcrypt.hash(body.password,salt)
 
-
-        return {
-            status: 'success',
-            message: 'User registration received',
+        
+        const user = await prisma.user.create({
             data: {
-                email: body.email
-                // Don't send password back!
+                email: body.email,
+                password: passwordHash,
+                salt:salt
             }
+        })
+
+        return { 
+            status: 'success'
         }
     } catch (error) {
         console.error('Server error:', error)
@@ -23,3 +35,5 @@ export default defineEventHandler(async (event) => {
         }
     }
 })
+
+// Remeber to remove the ? on the user schema since the fields are required 

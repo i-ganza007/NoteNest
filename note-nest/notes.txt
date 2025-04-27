@@ -10,7 +10,7 @@ c. Setup Tailwind css or whatever you like
 d. One of the perks of nuxt is when you have a components folder and you want to use the components in pages , you don't have to import it as normally in vue .
  Just use the file name normally
 
-Setting up mysql and prisma (mamp and prisma) : Prisma is a traditional ORM that prevents from writing raw SQL and using Relational DB 
+Setting up mysql and prisma (mamp and prisma) : Prisma is a traditional ORM that prevents from writing raw SQL and using Relational DB  , Make sure to install its prisma client to interact with your database
 MAMP : Is a database window that helps to connect and control databases to mostly MySQL and this handles well with Prisma 
 Basically : like a database local liveserver before deploying it 
 
@@ -20,5 +20,5 @@ When writing event listeners , use modifiers like .prevent to stop default behav
 
 In vue , v-bind is for one-way binding for data like from parent to child in props & v-model is like two-way binding , to reflect data when user types something
 
-To write the backend code routes , create an api(name it api) folder in the server folder and create files that control the backend routes
-Again the files , are in charge of the route names
+To write the backend code routes , create an api(name it whatever you want but make use that name for the routing fetching) folder in the server folder and create files that control the backend routes
+Again the files , are in charge of the route names 
