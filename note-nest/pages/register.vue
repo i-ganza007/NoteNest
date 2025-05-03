@@ -36,6 +36,7 @@
 </template>
 
 <script setup>
+import Swal from 'sweetalert2'
 import { ref } from 'vue';
 
 const email = ref('')
@@ -54,8 +55,25 @@ async function submit() {
         });
         
         console.log('Response from server:', response);
+        
+        const result = await Swal.fire({
+            title: 'Success!',
+            text: 'Account created successfully',
+            icon: 'success',
+            confirmButtonText: 'Close'
+        });
+
+        if (result.isConfirmed) {
+            navigateTo('/');
+        }
     } catch (error) {
-        console.error('Error submitting form:', error);
+        console.error('Error details:', error);
+        Swal.fire({
+            title: 'Error!',
+            text: error.data?.message || error.message || 'An error occurred',
+            icon: 'error',
+            confirmButtonText: 'Close'
+        })
     }
 }
 </script>
