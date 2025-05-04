@@ -6,7 +6,7 @@
 
             <h1 class="text-white text-lg font-bold text-lef mt-8">Sign up for a free account</h1>
 
-            <p class="text-zinc-300 text-sm mt-0.5">Already registered?<span class="underline font-bold text-[#FFAC00]"> Log in </span>to your account</p>
+            <p class="text-zinc-300 text-sm mt-0.5">Already registered?<nuxt-link to='/login' class="underline font-bold text-[#FFAC00]"> Log in </nuxt-link>to your account</p>
 
             <form @submit.prevent="submit">
                 <div class="mt-12 ">
@@ -23,7 +23,7 @@
 
                 <!-- Sign Up button -->
                 <div class="mt-4">
-                    <button class="bg-[#FFAC00] w-full rounded-full px-4 py-2 text-sm font-bold flex justify-center items-center gap-2">Sign Up
+                    <button class="bg-[#FFAC00] w-full rounded-full px-4 py-2 text-sm font-bold flex justify-center items-center gap-2">Log In
                         <span><Arrow/></span>
                     </button>
                 </div>

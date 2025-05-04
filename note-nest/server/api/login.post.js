@@ -41,30 +41,38 @@ export default defineEventHandler(async (event) => {
     }
 
     // First, check if the email already exists in the database
-    const existingUser = await prisma.user.findUnique({
-      where: { email: body.email },
-    });
-
-    if (existingUser) {
-      throw createError({
-        statusCode: 409,
-        statusMessage: 'Conflict',
-        message: 'An email like this already exists in the application'
-      });
-    }
-
-    // Proceed with hashing the password
-    const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash(body.password, salt);
-
-    // Now create the user
-    const user = await prisma.user.create({
-      data: {
-        email: body.email,
-        password: passwordHash,
-        salt: salt,
+    const user = await prisma.user.findUnique({
+      data:{
+        email:body.email
       }
     });
+
+    // if (existingUser) {
+    //   throw createError({
+    //     statusCode: 409,
+    //     statusMessage: 'Conflict',
+    //     message: 'An email like this already exists in the application'
+    //   });
+    // }
+
+    // Proceed with hashing the password
+    const isValid = await bcrypt.compare(body.password, user.password);
+
+    if(!isValid){
+        throw createError({
+                statusCode: 400,
+                message: 'User or password is invalid '
+              });
+    }
+
+    // Now create the user
+    // const user = await prisma.user.create({
+    //   data: {
+    //     email: body.email,
+    //     password: passwordHash,
+    //     salt: salt,
+    //   }
+    // });
 
     const token = jwt.sign({id:user.id},process.env.JWT_SECRET)
     

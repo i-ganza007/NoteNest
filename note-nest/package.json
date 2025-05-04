@@ -13,6 +13,7 @@
     "@prisma/client": "latest",
     "@prisma/nuxt": "latest",
     "bcryptjs": "^3.0.2",
+    "jsonwebtoken": "^9.0.2",
     "nuxt": "^3.16.2",
     "sweetalert2": "^11.19.1",
     "validator": "^13.15.0",
