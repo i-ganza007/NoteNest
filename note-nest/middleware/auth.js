@@ -8,17 +8,18 @@ export default defineNuxtRouteMiddleware(async(event)=>{
     const jwt = useCookie('NoteNest')
     console.log(jwt.value)
     if(!jwt.value){
-        return navigateTo('/register')
+        return navigateTo('/login')
     }
     try {
         const decoded = nuxtApp.$verifyJWTToken(
-          jwtCookie.value,
+          jwt.value,
           useRuntimeConfig().jwtSecret 
         )
         // console.log('Decoded token:', decoded)
     } 
     catch (err) {
     console.error('JWT Error:', err)
+    jwt.value = null
     return navigateTo('/register')
     }
 })

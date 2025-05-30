@@ -6,7 +6,7 @@
 
             <h1 class="text-white text-lg font-bold text-lef mt-8">Log in to your account</h1>
 
-            <p class="text-zinc-300 text-sm mt-0.5">Don't have an account?<nuxt-link to='/register' class="underline font-bold text-[#FFAC00]">Sign Up</nuxt-link>for one</p>
+            <p class="text-zinc-300 text-sm mt-0.5">Don't have an account? <nuxt-link to='/register' class="underline font-bold text-[#FFAC00]">Sign Up</nuxt-link> for one</p>
 
             <form @submit.prevent="submit">
                 <div class="mt-12 ">
@@ -53,24 +53,22 @@ async function submit() {
                 password: password.value
             },
         });
-        
+         
         console.log('Response from server:', response);
         
         const result = await Swal.fire({
             title: 'Success!',
-            text: 'Account created successfully',
+            text: 'Logged In successfully',
             icon: 'success',
             confirmButtonText: 'Close'
         });
 
-        if (result.isConfirmed) {
-            navigateTo('/');
-        }
+        await navigateTo('/',{replace: true})
     } catch (error) {
         console.error('Error details:', error);
         Swal.fire({
             title: 'Error!',
-            text: error.data?.message || error.message || 'An error occurred',
+            text: error.message || 'An error occurred',
             icon: 'error',
             confirmButtonText: 'Close'
         })

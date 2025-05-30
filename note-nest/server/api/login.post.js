@@ -42,7 +42,7 @@ export default defineEventHandler(async (event) => {
 
     // First, check if the email already exists in the database
     const user = await prisma.user.findUnique({
-      data:{
+      where:{
         email:body.email
       }
     });
@@ -61,7 +61,7 @@ export default defineEventHandler(async (event) => {
     if(!isValid){
         throw createError({
                 statusCode: 400,
-                message: 'User or password is invalid '
+                message: 'User or password is invalid'
               });
     }
 
