@@ -12,6 +12,8 @@
   "dependencies": {
     "@prisma/client": "latest",
     "@prisma/nuxt": "latest",
+    "@vueuse/core": "^13.3.0",
+    "@vueuse/nuxt": "^13.3.0",
     "bcryptjs": "^3.0.2",
     "dayjs": "^1.11.13",
     "jsonwebtoken": "^9.0.2",

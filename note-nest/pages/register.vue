@@ -23,7 +23,7 @@
 
                 <!-- Sign Up button -->
                 <div class="mt-4">
-                    <button class="bg-[#FFAC00] w-full rounded-full px-4 py-2 text-sm font-bold flex justify-center items-center gap-2">Log In
+                    <button class="bg-[#FFAC00] w-full rounded-full px-4 py-2 text-sm font-bold flex justify-center items-center gap-2">Register
                         <span><Arrow/></span>
                     </button>
                 </div>

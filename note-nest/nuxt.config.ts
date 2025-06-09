@@ -31,7 +31,7 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ['@prisma/nuxt'],
+  modules: ['@prisma/nuxt','@vueuse/nuxt'],
   
   // Add this prisma configuration for JavaScript
   prisma: {

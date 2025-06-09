@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-zinc-900 h-full flex">
+    <div class="bg-zinc-900 h-dvh flex">
         <!-- Side component -->
         <div class="bg-black w-[338px] p-8">
             <Logo/>
@@ -38,7 +38,7 @@
         </div>
 
         <!-- Intro Sections -->
-        <div class="w-full">
+        <div class="w-full flex flex-col">
             <div class="flex justify-between w-full items-start p-8">
 
                 <button class="text-xs text-[#C2C2C5] inline-flex items-center space-x-2 hover:text-white hover:font-bold">
@@ -49,12 +49,11 @@
                 <button> <Trash class="text-[#6D6D73] hover:text-white hover:font-bold"/> </button>
             </div>
 
-            <div class="max-w-[560px] mx-auto">
+            <div class="max-w-[560px] mx-auto w-full flex-grow flex flex-col">
                 <p class="text-[#929292]">{{new Date(selectedNote.updatedAt).toLocaleDateString()}}</p>
+                <textarea name="note" id="note" cols="30" rows="10" class="w-full bg-transparent focus:outline-none text-white flex-grow" v-model="updatedNote" @input="debouncedFn">
                 
-                <p class="text-[#D4D4D4] my-4 font-playfair" v-text="selectedNote.text">
-                    
-                </p>
+                </textarea>
             </div>
         </div>
 
@@ -66,19 +65,49 @@
 import { onMounted , ref , computed } from "vue"
 import dayjs from 'dayjs'
 const selectedNote = ref({})
-
+const updatedNote = computed({ // Whenever a v-model or mirroring fails , opt to use computed properties
+    get(){
+        return selectedNote.value.text
+    },
+    set(val){
+        if(selectedNote.value){
+            selectedNote.value.text = val
+        }
+    }
+})
 definePageMeta({
     middleware:['auth']
 })
 
 const notes = ref([])
 
+const debouncedFn = useDebounceFn(async () => {
+  await updateNote()
+}, 1000)
 
 
+
+async function updateNote(){
+    try{
+        // console.log(updatedNote.value)
+        await $fetch(`/api/notes/${selectedNote.value.id}`,{
+            method:'PATCH', // When changing only one column or thing 
+            body:{
+                updatedNote:updatedNote.value
+            }
+        })
+        // console.log(`/api/notes/${selectedNote.value.id}`)
+    }
+    catch(err){
+
+    }
+}
+// updateNote()
 onMounted(async ()=>{
     notes.value = await $fetch('/api/notes')
     if(notes.value.length > 0) selectedNote.value = notes.value[0]
-    console.log(res)
+    // console.log(res)
+    updatedNote.value = selectedNote.value.text
 })
 
 const todaysNotes = computed(() => {
