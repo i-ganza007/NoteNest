@@ -1,13 +1,11 @@
 import { PrismaClient, Prisma } from '@prisma/client';
 import jwt from 'jsonwebtoken'
-
 const prisma = new PrismaClient()
-export default defineEventHandler(async (event)=>{
-    try{
-        // const body = await readBody(event)
-        // console.log(body)
-        const id = getRouterParam(event,'id')
 
+export default defineEventHandler(async (event) => {
+    try{
+        const id = getRouterParam(event,'id')
+        
         const cookies = parseCookies(event)
         const token = cookies.NoteNest
 
@@ -38,16 +36,18 @@ export default defineEventHandler(async (event)=>{
                 statusMessage:'Eorrs weeeeee'            })
 
         }
-        await prisma.note.update({
+
+        await prisma.note.delete({
             where:{
-                id:Number(id),
-            },
-            data:{
-                text:body.updatedNote,
+                id:Number(id)
             }
         })
+        return {status:'deleted',message:success}
     }
     catch(err){
-        console.log(err)
+        throw createError({
+            statusCode:400,
+            statusMessage:err
+        })
     }
 })

@@ -18,12 +18,16 @@
                 <div class="mt-6">
                     <label for="password" class="text-white text-sm font-normal block text-zinc-300 mb-0.5">Password</label>
 
-                    <input type="password" v-model="password" class="block w-full bg-[#27272A] border-[#3F3F46] rounded text-white px-4 py-2 placeholder:text-zinc-500 text-sm" placeholder="**********">
+                    <div class="flex  items-center">
+                        <input type="password" v-model="password" ref='passwordInput' class="block w-full bg-[#27272A] border-[#3F3F46] rounded text-white px-4 py-2 placeholder:text-zinc-500 text-sm" placeholder="**********" id="input">
+                        <Password class="relative right-8 hover:cursor-pointer" @click="togglePassword" />
+                    </div>
+                    
                 </div>
 
                 <!-- Sign Up button -->
                 <div class="mt-4">
-                    <button class="bg-[#FFAC00] w-full rounded-full px-4 py-2 text-sm font-bold flex justify-center items-center gap-2">Sign Up
+                    <button class="bg-[#FFAC00] w-full rounded-full px-4 py-2 text-sm font-bold flex justify-center items-center gap-2">Log In
                         <span><Arrow/></span>
                     </button>
                 </div>
@@ -41,6 +45,16 @@ import { ref } from 'vue';
 
 const email = ref('')
 const password = ref('')
+
+const passwordInput = ref(null);
+let isVisible = false;
+function togglePassword() {
+  if (passwordInput.value) {
+    passwordInput.value.type = isVisible ? 'password' : 'text';
+    isVisible = !isVisible;
+  }
+  console.log('EXECUTING')
+}
 
 async function submit() {
     try {

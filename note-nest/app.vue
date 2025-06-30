@@ -23,3 +23,5 @@
 }
 
 </style>
+<script setup>
+</script>

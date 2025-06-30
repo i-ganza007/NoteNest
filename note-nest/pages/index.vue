@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-zinc-900 h-dvh flex">
+    <div class="bg-zinc-900 h-full flex">
         <!-- Side component -->
         <div class="bg-black w-[338px] p-8">
             <Logo/>
@@ -41,20 +41,22 @@
         <div class="w-full flex flex-col">
             <div class="flex justify-between w-full items-start p-8">
 
-                <button class="text-xs text-[#C2C2C5] inline-flex items-center space-x-2 hover:text-white hover:font-bold">
+                <button class="text-xs text-[#C2C2C5] inline-flex items-center space-x-2 hover:text-white hover:font-bold" @click="createNewNote">
                     <Creation/>
                     <span>
                         Create Note
                     </span></button>
-                <button> <Trash class="text-[#6D6D73] hover:text-white hover:font-bold"/> </button>
+                <button> <Trash class="text-[#6D6D73] hover:text-white hover:font-bold" @click="deleteNote"/> </button>
             </div>
 
             <div class="max-w-[560px] mx-auto w-full flex-grow flex flex-col">
                 <p class="text-[#929292]">{{new Date(selectedNote.updatedAt).toLocaleDateString()}}</p>
-                <textarea name="note" id="note" cols="30" rows="10" class="w-full bg-transparent focus:outline-none text-white flex-grow" v-model="updatedNote" @input="debouncedFn">
+                <textarea name="note" id="note" cols="30" rows="10" class="w-full bg-transparent focus:outline-none text-white flex-grow" v-model="updatedNote" @input="debouncedFn" ref='textarea'>
                 
                 </textarea>
             </div>
+
+            <button class="text-zinc-500 hover:text-white text-sm font-bold absolute right-0 bottom-0 p-8" @click="logout">Log Out</button>
         </div>
 
         
@@ -62,8 +64,9 @@
 </template>
 
 <script setup>
-import { onMounted , ref , computed } from "vue"
+import { onMounted , ref , computed} from "vue"
 import dayjs from 'dayjs'
+const textarea = ref(null)
 const selectedNote = ref({})
 const updatedNote = computed({ // Whenever a v-model or mirroring fails , opt to use computed properties
     get(){
@@ -75,6 +78,13 @@ const updatedNote = computed({ // Whenever a v-model or mirroring fails , opt to
         }
     }
 })
+
+function logout(){
+    console.log('Helllloooo')
+    // const jwtCookie = useCookie('NoteNest')
+    // console.log(jwtCookie.value)
+}
+
 definePageMeta({
     middleware:['auth']
 })
@@ -84,6 +94,27 @@ const notes = ref([])
 const debouncedFn = useDebounceFn(async () => {
   await updateNote()
 }, 1000)
+
+
+
+async function createNewNote(){
+    try{
+        // console.log(updatedNote.value)
+        const newNote = await $fetch(`/api/notes`,{
+            method:'POST', // When changing only one column or thing 
+        })
+        // notes.value.unshift(newNote)
+        // selectedNote.value = notes.value[0]
+        // updatedNote.value = ''
+        // console.log(`/api/notes/${selectedNote.value.id}`)
+        textarea.value.focus()
+        console.log('New note success')
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
 
 
 
@@ -102,18 +133,33 @@ async function updateNote(){
 
     }
 }
+
+
+async function deleteNote(){
+    try{
+        await $fetch(`/api/notes/${selectedNote.value.id}`,{
+            method:'DELETE',
+            
+        })
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
 // updateNote()
 onMounted(async ()=>{
     notes.value = await $fetch('/api/notes')
     if(notes.value.length > 0) selectedNote.value = notes.value[0]
     // console.log(res)
     updatedNote.value = selectedNote.value.text
+    textarea.value.focus()
 })
 
 const todaysNotes = computed(() => {
   return notes.value.filter(note => {
     return dayjs(note.updatedAt.replace(' ', 'T')).isSame(dayjs(), 'day')
-  })
+  }).sort((a,b)=>new Date(b.updatedAt) - new Date(a.updatedAt))
 })
 
 const yesterdayNotes = computed(()=>{
